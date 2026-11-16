@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>セール・ポイント実質価格比較ツール｜割引とポイント還元を合わせて実質いくらか計算</title>
+<meta name="description" content="割引率とポイント還元率を入れるだけで、「今払う金額」と「実質負担額」がすぐわかります。2つの店舗・セールの買い方（パターンA/B）を比べて、どちらが実質いくら安いか判定。ポイント還元の割引換算の考え方も解説します。登録不要・無料。">
+<link rel="canonical" href="https://mini-tools-lab.github.io/sale-price/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="セール・ポイント実質価格比較ツール">
+<meta property="og:title" content="セール・ポイント実質価格比較ツール｜割引とポイント還元を合わせて実質いくらか計算">
+<meta property="og:description" content="割引とポイント還元を合わせて「実質負担額」を計算。2つの買い方を比べて、どちらが実質いくら安いかすぐわかります。登録不要・無料。">
+<meta property="og:url" content="https://mini-tools-lab.github.io/sale-price/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="セール・ポイント実質価格比較ツール">
+<meta name="twitter:description" content="「30%引き」と「30%ポイント還元」、実質お得なのはどっち？割引と還元を合わせて実質価格を比較できます。登録不要・無料。">
+<style>
+:root{
+--bg:#f3f5f0; --surface:#ffffff; --surface2:#eef3ec; --text:#1a2e28; --muted:#5b6b64; --line:#dde5dc;
+--primary:#0f766e; --primary-dark:#0b5e57; --primary-soft:#e0f2ef; --accent:#e86a33; --accent-soft:#fff0e6;
+--danger:#dc2626; --ok:#15803d; --radius:18px; --shadow:0 4px 24px rgba(20,50,40,.08);
+}
+@media (prefers-color-scheme: dark){
+:root{ --bg:#101613; --surface:#1a211e; --surface2:#232d28; --text:#e8f0ec; --muted:#9db0a6; --line:#2e3a34; --primary:#2dd4bf; --primary-dark:#2dd4bf; --primary-soft:#14332f; --accent:#fb923c; --accent-soft:#3a2415; --shadow:0 4px 24px rgba(0,0,0,.35);}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;line-height:1.6}
+button,input,select{font:inherit;min-height:44px}
+h1,h2{font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;font-weight:700;line-height:1.3;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 48px}
+.hero{padding:8px 2px 18px}
+.hero h1{font-size:32px;font-weight:900;letter-spacing:.02em}
+.hero h1 span{color:var(--primary)}
+.hero p{color:var(--muted);margin:8px 0 0;font-size:15px;max-width:640px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card h2{font-size:18px;display:flex;align-items:center;gap:8px}
+.num{width:28px;height:28px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 12px}
+.field{margin-bottom:14px}
+.field label{font-size:13px;font-weight:700;display:block;margin-bottom:5px}
+input{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface);color:var(--text);width:100%}
+input:focus{outline:2px solid var(--primary);outline-offset:1px;border-color:transparent}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.pat-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.pat-badge{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0}
+.pat-head h2{font-size:18px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+th{background:var(--surface2)}
+td:first-child,th:first-child{text-align:left;font-weight:700}
+.res{margin-top:6px;border-top:1px dashed var(--line);padding-top:10px}
+.res dl{margin:0}
+.res .row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;font-size:14px}
+.res dt{color:var(--muted)}
+.res dd{margin:0;font-weight:700}
+.res .row.eff{border-top:1px solid var(--line);margin-top:6px;padding-top:10px}
+.res .row.eff dt{color:var(--text);font-weight:700;font-size:15px}
+.res .row.eff dd{font-size:24px;font-weight:900;color:var(--primary)}
+.res .row.rate dd{color:var(--accent)}
+.result{margin-top:16px;background:var(--primary);color:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);text-align:center}
+@media(prefers-color-scheme:dark){.result{background:#0f3d38}}
+.result .r-label{font-size:14px;font-weight:700;opacity:.95}
+.result .r-amount{font-size:34px;font-weight:900;line-height:1.3;margin:4px 0}
+.result .r-note{margin-top:12px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:12px 14px;font-size:14px;text-align:left}
+.note{font-size:13px;color:var(--muted);margin-top:12px}
+.stack{margin-top:16px}
+footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+footer a{color:var(--primary);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+<h1>セール・ポイント<span>実質価格</span>比較ツール</h1>
+<p>「30%引き」と「30%ポイント還元」、実質お得なのはどっち？ 商品価格・割引率・ポイント還元率・送料を入れるだけで、今払う金額と実質負担額が出て、2つの買い方を比べられます。</p>
+</header>
+
+<section aria-label="パターン入力と比較結果">
+<div class="grid">
+<section class="card" aria-labelledby="pat-a-h">
+<div class="pat-head"><span class="pat-badge">A</span><h2 id="pat-a-h">買い方A</h2></div>
+<p class="hint">例：セールで割引される店舗など</p>
+<div class="field">
+<label for="priceA">商品価格（円・税込）</label>
+<input id="priceA" type="number" inputmode="numeric" min="0" step="1" value="10000">
+</div>
+<div class="field">
+<label for="discA">割引率（%）</label>
+<input id="discA" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="30">
+</div>
+<div class="field">
+<label for="pointA">ポイント還元率（%）</label>
+<input id="pointA" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="1">
+</div>
+<div class="field">
+<label for="shipA">送料（円）</label>
+<input id="shipA" type="number" inputmode="numeric" min="0" step="1" value="0">
+</div>
+<div class="res" aria-live="polite">
+<dl>
+<div class="row"><dt>割引後の商品価格</dt><dd id="dA">7,000円</dd></div>
+<div class="row"><dt>今払う金額</dt><dd id="payA">7,000円</dd></div>
+<div class="row"><dt>もらえるポイント</dt><dd id="ptsA">70ポイント</dd></div>
+<div class="row eff"><dt>実質負担額</dt><dd id="effA">6,930円</dd></div>
+<div class="row rate"><dt>実質割引率</dt><dd id="rateA">30.7%</dd></div>
+</dl>
+</div>
+</section>
+
+<section class="card" aria-labelledby="pat-b-h">
+<div class="pat-head"><span class="pat-badge">B</span><h2 id="pat-b-h">買い方B</h2></div>
+<p class="hint">例：ポイント還元が大きい店舗など</p>
+<div class="field">
+<label for="priceB">商品価格（円・税込）</label>
+<input id="priceB" type="number" inputmode="numeric" min="0" step="1" value="10000">
+</div>
+<div class="field">
+<label for="discB">割引率（%）</label>
+<input id="discB" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="0">
+</div>
+<div class="field">
+<label for="pointB">ポイント還元率（%）</label>
+<input id="pointB" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="30">
+</div>
+<div class="field">
+<label for="shipB">送料（円）</label>
+<input id="shipB" type="number" inputmode="numeric" min="0" step="1" value="550">
+</div>
+<div class="res" aria-live="polite">
+<dl>
+<div class="row"><dt>割引後の商品価格</dt><dd id="dB">10,000円</dd></div>
+<div class="row"><dt>今払う金額</dt><dd id="payB">10,550円</dd></div>
+<div class="row"><dt>もらえるポイント</dt><dd id="ptsB">3,000ポイント</dd></div>
+<div class="row eff"><dt>実質負担額</dt><dd id="effB">7,550円</dd></div>
+<div class="row rate"><dt>実質割引率</dt><dd id="rateB">24.5%</dd></div>
+</dl>
+</div>
+</section>
+</div>
+
+<div class="result" id="result" aria-live="polite">
+<div class="r-label">比較の結論</div>
+<div class="r-amount" id="verdict">Aのほうが実質620円お得</div>
+<div class="r-note" id="verdict-note">この例では「30%引き＋1%還元」のほうが、「30%ポイント還元＋送料550円」より実質負担が小さくなります。ポイント還元は額面どおりの割引ではないため、同じ数字でも割引のほうが有利になりやすいのがポイントです。</div>
+</div>
+<p class="note">※ ポイントは「割引後の商品価格」に対して付き、送料には付かない前提で計算しています。ポイントは額面どおり次回の買い物で使えるお金として差し引いています（ポイントの期限や使い道によって実感は変わります）。</p>
+</section>
+
+<div class="grid stack">
+<section class="card" aria-labelledby="table-h">
+<h2 id="table-h">ポイント還元の「割引換算」早見表</h2>
+<p class="hint">ポイント還元率を「何%引き」と同じ物差しで見たときの目安です。詳しい考え方は<a href="guide.html">解説ページ</a>へ。</p>
+<table>
+<tr><th>ポイント還元率</th><th>割引に換算すると</th></tr>
+<tr><td>1%</td><td>約1.0%引き</td></tr>
+<tr><td>5%</td><td>約4.8%引き</td></tr>
+<tr><td>10%</td><td>約9.1%引き</td></tr>
+<tr><td>20%</td><td>約16.7%引き</td></tr>
+<tr><td>30%</td><td>約23.1%引き</td></tr>
+<tr><td>40%</td><td>約28.6%引き</td></tr>
+<tr><td>50%</td><td>約33.3%引き</td></tr>
+</table>
+<p class="note">※ たとえば「50%ポイント還元」は「半額」とは違い、割引換算では約33.3%引きにあたります。</p>
+</section>
+
+<section class="card" aria-labelledby="about-h">
+<h2 id="about-h">このツールについて</h2>
+<p class="hint">セール時期は「○%引き」「ポイント○倍」「○%還元」が入り混じり、見た目の数字だけでは比べにくくなります。このツールは、割引とポイント還元を「実質負担額」という1つの数字にそろえて比較できるようにしたものです。</p>
+<p class="hint">計算の前提：割引は商品価格から先に引かれ、ポイントは割引後の商品価格に対して付きます。送料は今払う金額に加算され、ポイント付与の対象外です。金額は1円未満切り捨てです。</p>
+<p class="hint">入力した内容はどこにも送信されません。ブラウザの中だけで計算しています。</p>
+<p class="hint"><a href="guide.html">解説ページ：ポイント還元の割引換算と考え方</a>では、換算の仕組みやセールでの使い方、よくある誤解をまとめています。</p>
+</section>
+</div>
+
+<footer>
+<p>セール・ポイント実質価格比較ツール｜<a href="guide.html">解説ページ</a>｜実質負担額はポイントを額面どおり使える前提の目安です。実際の還元条件は各ストアの案内をご確認ください。</p>
+</footer>
+</div>
+
+<script>
+"use strict";
+// === CALC LOGIC START ===
+// 1パターン分の計算。金額は1円未満切り捨て。
+// ポイントは割引後の商品価格に対して付き、送料には付かない前提。
+function calcPattern(price, discountRate, pointRate, shipping){
+  price = Number(price); if (!isFinite(price) || price < 0) price = 0;
+  discountRate = Number(discountRate); if (!isFinite(discountRate) || discountRate < 0) discountRate = 0; if (discountRate > 100) discountRate = 100;
+  pointRate = Number(pointRate); if (!isFinite(pointRate) || pointRate < 0) pointRate = 0; if (pointRate > 100) pointRate = 100;
+  shipping = Number(shipping); if (!isFinite(shipping) || shipping < 0) shipping = 0;
+  var discounted = Math.floor(price * (100 - discountRate) / 100 + 1e-6);
+  var points = Math.floor(discounted * pointRate / 100 + 1e-6);
+  var payNow = discounted + shipping;
+  var effective = payNow - points;
+  var effectiveRate = price > 0 ? (price - effective) / price * 100 : null;
+  return { discounted: discounted, payNow: payNow, points: points, effective: effective, effectiveRate: effectiveRate };
+}
+// A/B の実質負担額を比べる。winner: "A" | "B" | "same", diff: 差額（円、正の数）
+function comparePatterns(a, b){
+  var diff = a.effective - b.effective;
+  if (diff > 0) return { winner: "B", diff: diff };
+  if (diff < 0) return { winner: "A", diff: -diff };
+  return { winner: "same", diff: 0 };
+}
+// === CALC LOGIC END ===
+
+function fmtYen(n){ return n.toLocaleString("ja-JP") + "円"; }
+function fmtRate(r){ return r === null ? "—" : (Math.round(r * 10) / 10).toFixed(1) + "%"; }
+function val(id){ return document.getElementById(id).value; }
+function render(prefix, r){
+  document.getElementById("d" + prefix).textContent = fmtYen(r.discounted);
+  document.getElementById("pay" + prefix).textContent = fmtYen(r.payNow);
+  document.getElementById("pts" + prefix).textContent = r.points.toLocaleString("ja-JP") + "ポイント";
+  document.getElementById("eff" + prefix).textContent = fmtYen(r.effective);
+  document.getElementById("rate" + prefix).textContent = fmtRate(r.effectiveRate);
+}
+function calc(){
+  var a = calcPattern(val("priceA"), val("discA"), val("pointA"), val("shipA"));
+  var b = calcPattern(val("priceB"), val("discB"), val("pointB"), val("shipB"));
+  render("A", a);
+  render("B", b);
+  var c = comparePatterns(a, b);
+  var verdict = document.getElementById("verdict");
+  var note = document.getElementById("verdict-note");
+  if (c.winner === "same") {
+    verdict.textContent = "AとBは実質同額です";
+    note.textContent = "実質負担額はどちらも" + fmtYen(a.effective) + "です。今払う金額やポイントの使いやすさ（期限・使える店）で選ぶとよいでしょう。";
+  } else {
+    var w = c.winner === "A" ? a : b;
+    var l = c.winner === "A" ? b : a;
+    verdict.textContent = c.winner + "のほうが実質" + c.diff.toLocaleString("ja-JP") + "円お得";
+    note.textContent = c.winner + "の実質負担額は" + fmtYen(w.effective) + "、もう一方は" + fmtYen(l.effective) + "です。今払う金額は" + c.winner + "が" + fmtYen(w.payNow) + "、もう一方が" + fmtYen(l.payNow) + "なので、手元の現金の出ていき方もあわせて確認してください。";
+  }
+}
+["priceA","discA","pointA","shipA","priceB","discB","pointB","shipB"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", calc);
+  document.getElementById(id).addEventListener("change", calc);
+});
+calc();
+</script>
+</body>
+</html>
